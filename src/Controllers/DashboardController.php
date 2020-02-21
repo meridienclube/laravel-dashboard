@@ -73,6 +73,7 @@ class DashboardController extends Controller
     public function update(Request $request, $id)
     {
         $data = $request->all();
+        //dd($data);
         $dashboard = resolve('DashboardService')->update($data, $id);
         return redirect()
             ->route('dashboards.edit', $dashboard->id)

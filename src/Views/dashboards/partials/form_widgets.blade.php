@@ -1,11 +1,13 @@
 <div class="row">
+    {{ dd('laravel-dashboard/src/Views/dashboards/partials/form_widgets.blade.php') }}
     @if(isset($dashboard->widgets))
 
         @foreach($dashboard->widgets as $widget)
 
-            <div class="{{ $widget->pivot_options['col']?? 'col-6' }}">
-                <div class="kt-portlet {{ $widget->pivot_options['background']?? '' }}">
-                    {!! Form::model($dashboard, ['url' => route('dashboards.widget.edit', ['id' => $dashboard->id, 'widget_pivot_id' => $widget->id]), 'method' => 'put', 'class' => 'horizontal-form']) !!}
+
+
+            <div class="{{ $widget->pivot->options['col']?? 'col-6' }}">
+                <div class="kt-portlet {{ $widget->pivot->options['background']?? '' }}">
                     <div class="kt-portlet__head">
                         <div class="kt-portlet__head-label">
                             <h3 class="kt-portlet__head-title">
@@ -22,7 +24,7 @@
                                         <li class="kt-nav__item">
                                             <a href="#" class="kt-nav__link">
                                                 <i class="kt-nav__link-icon flaticon-delete"></i>
-                                                <span class="kt-nav__link-text">{{ trans('meridien.remove') }}</span>
+                                                <span class="kt-nav__link-text">{{ __('widgets::form.remove') }}</span>
                                             </a>
                                         </li>
                                     </ul>
@@ -33,21 +35,23 @@
                     <div class="kt-portlet__body">
                         <div class="form-group">
                             <label>Titulo</label>
-                            {!! Form::text('sync[options][title]', $widget->pivot_options['title']?? '', ['class' => 'form-control', 'placeholder' => 'Titulo desse widget', 'required']) !!}
-                        </div>
-                        <div class="form-group">
-                            <label>Tamanho do widget</label>
-                            {{ Form::select('sync[options][col]', ['col-md-3' => '1/4', 'col-md-6' => '2/4', 'col-md-9' => '3/4', 'col-md-12' => '4/4'], $widget->pivot_options['col']?? NULL, ['class' => 'form-control', 'required']) }}
-                        </div>
-                        <div class="form-group">
-                            <label>Cor do widget</label>
-                            {{ Form::select('sync[optionsValues][background]', ['not' => 'Escolha uma cor', 'kt-portlet--skin-solid kt-portlet-- kt-bg-brand' => 'Azul', 'kt-portlet--skin-solid kt-bg-warning' => 'Amarelo', 'kt-portlet--skin-solid kt-bg-success' => 'Verde', 'kt-portlet--skin-solid kt-bg-danger' => 'Rosa'], $widget->pivot_options['background']?? NULL, ['class' => 'form-control', 'required']) }}
+
+                            {!! Form::text('sync[widgets][' . $widget->pivot->id . '][options][title]', $widget->pivot->options['title']?? '', ['class' => 'form-control', 'placeholder' => 'Titulo desse widget', 'required']) !!}
                         </div>
 
+                        <div class="form-group">
+                            <label>Tamanho do widget</label>
+                            {{ Form::select('sync[widgets][' . $widget->pivot->id . '][options][col]', ['col-md-3' => '1/4', 'col-md-6' => '2/4', 'col-md-9' => '3/4', 'col-md-12' => '4/4'], $widget->pivot->options['col']?? 'col-md-6', ['class' => 'form-control', 'required']) }}
+                        </div>
+
+                        <div class="form-group">
+                            <label>Cor do widget</label>
+                            {{ Form::select('sync[widgets][' . $widget->pivot->id . '][options][background]', ['not' => 'Escolha uma cor', 'bg-brand' => 'Azul', 'bg-warning' => 'Amarelo', 'bg-success' => 'Verde', 'bg-danger' => 'Vermelho'], $widget->pivot->options['background']?? 'not', ['class' => 'form-control', 'required']) }}
+                        </div>
 
                         @if(isset($widget) && isset($widget->options) && !empty($widget->options))
                             @foreach($widget->options as $option)
-                                {!! option_input($widget, $option, false) !!}
+                                {!! option_input($widget, $option, false, ['name' => 'sync[widgets][' . $widget->pivot->id . '][options]']) !!}
                             @endforeach
                         @endif
 
@@ -62,7 +66,6 @@
                             </div>
                         </div>
                     </div>
-                    {!! Form::close() !!}
                 </div>
             </div>
 

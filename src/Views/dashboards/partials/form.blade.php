@@ -1,7 +1,8 @@
+{!! Form::open(['route' => ['dashboards.update', $dashboard->id], 'method' => 'put', 'class' => 'horizontal-form']) !!}
+
 <div class="container-fluid">
     <div class="row">
         <div class="col-12">
-            {!! Form::open(['route' => ['dashboards.update', $dashboard->id], 'method' => 'put', 'class' => 'horizontal-form']) !!}
             <div class="form-group row align-items-center">
                 <div class="col-md-9">
                     <div class="kt-form__group--inline">
@@ -28,9 +29,9 @@
                 </div>
             </div>
             @include('dashboard::dashboards.partials.form_widget')
-            {!! Form::close() !!}
         </div>
     </div>
+    @include('dashboard::dashboards.partials.form_widgets', ['dashboard' => $dashboard])
 </div>
 
-@include('dashboard::dashboards.partials.form_widgets', ['dashboard' => $dashboard])
+{!! Form::close() !!}
