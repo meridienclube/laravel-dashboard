@@ -17,7 +17,8 @@
   ],
   "require": {
     "confrariaweb/laravel-user": "dev-master",
-    "confrariaweb/laravel-vendor": "dev-master"
+    "confrariaweb/laravel-vendor": "dev-master",
+    "confrariaweb/laravel-widget": "dev-master"
   },
   "autoload": {
     "psr-4": {

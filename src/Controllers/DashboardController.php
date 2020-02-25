@@ -15,35 +15,34 @@ class DashboardController extends Controller
         $this->data = [];
     }
 
-    /*
+    public function storeWidget(Request $request, $id)
+    {
+        $dashboard = resolve('DashboardService')
+            ->storeWidget($request->all(), $id);
+        return redirect()
+            ->route('dashboards.edit', $id)
+            ->with('status', 'Dashboards criado com sucesso!');
+    }
+
     public function updateWidget(Request $request, $id, $widget_pivot_id)
     {
-        $dashboard = resolve('DashboardService')->updateWidget($request->all(), $id, $widget_pivot_id);
+        $dashboard = resolve('DashboardService')
+            ->updateWidget($request->all(), $id, $widget_pivot_id);
         return redirect()
             ->route('dashboards.edit', $id)
             ->with('status', 'Dashboard editado com sucesso!');
     }
 
-    public function storeWidget(Request $request, $id)
-    {
-        $dashboard = resolve('DashboardService')->createWidget($request->all(), $id);
-        return redirect()
-            ->route('dashboards.edit', $id)
-            ->with('status', 'Dashboards criado com sucesso!');
-    }
-    */
-
     public function index()
     {
-        $this->data['dashboard'] = $dashboard = resolve('DashboardService')->findBy('user_id', auth()->user()->id);
-        $this->data['widgets'] = resolve('DashboardService')->widgets($dashboard);
-        return view(config('cw_dashboard.views') . 'dashboards.index', $this->data);
+        $dashboard = resolve('DashboardService')->findBy('user_id', auth()->user()->id);
+        return ($dashboard)? $this->show($dashboard->id) : view(config('cw_dashboard.views') . 'dashboards.index');
     }
 
     public function create()
     {
         $data['widgets'] = resolve('WidgetService')->all();
-        return view('meridien::dashboard.create', $data);
+        return view(config('cw_dashboard.views') . 'dashboards.create', $data);
     }
 
     public function store(Request $request)

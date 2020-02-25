@@ -7,7 +7,7 @@
                 </button>
             </div>
             <div class="modal-body">
-            {{ Form::select('attach[widgets][]', $widgets, isset($dashboard->widgets()->count)? $dashboard->widgets->pluck('id') : null, ['class' => 'form-control', 'multiple' => true]) }}
+            {{ Form::select('widgets[]', $widgets, null, ['class' => 'form-control', 'multiple' => true]) }}
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>

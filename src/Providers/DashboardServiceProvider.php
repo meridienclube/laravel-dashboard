@@ -14,6 +14,7 @@ class DashboardServiceProvider extends ServiceProvider
     {
         $this->loadRoutesFrom(__DIR__ . '/../Routes/web.php');
         $this->loadRoutesFrom(__DIR__ . '/../Routes/api.php');
+        $this->loadMigrationsFrom(__DIR__.'/../Databases/Migrations');
         $this->loadViewsFrom(__DIR__ . '/../Views', 'dashboard');
         $this->loadTranslationsFrom(__DIR__ . '/../Translations', 'dashboard');
         $this->publishes([__DIR__ . '/../../config/cw_dashboard.php' => config_path('cw_dashboard.php')], 'cw_dashboard');

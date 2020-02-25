@@ -1,12 +1,52 @@
 <div class="row">
-    {{ dd('laravel-dashboard/src/Views/dashboards/partials/form_widgets.blade.php') }}
     @if(isset($dashboard->widgets))
-
         @foreach($dashboard->widgets as $widget)
-
-
-
             <div class="{{ $widget->pivot->options['col']?? 'col-6' }}">
+                <div class="card {{ $widget->pivot->options['background']?? 'bg-light' }}" style="">
+                    {!! Form::model($dashboard, ['route' => ['dashboards.widget.update', $dashboard->id, $widget->pivot->id], 'method' => 'put', 'class' => 'horizontal-form']) !!}
+                    <div class="card-header">{{ $widget->name }}</div>
+                    <div class="card-body">
+                        <!--h5 class="card-title">{{ $widget->name }}</h5-->
+                        <p class="card-text">
+                            {{ $widget->description }}
+                        </p>
+                        <p class="card-text">
+                            <div class="form-group">
+                                <label>Titulo</label>
+                                {!! Form::text('widget[options][title]', $widget->pivot->options['title']?? '', ['class' => 'form-control', 'placeholder' => 'Titulo desse widget', 'required']) !!}
+                            </div>
+                            <div class="form-group">
+                                <label>Tamanho do widget</label>
+                                {{ Form::select('widget[options][col]', ['col-md-3' => '1/4', 'col-md-6' => '2/4', 'col-md-9' => '3/4', 'col-md-12' => '4/4'], $widget->pivot->options['col']?? 'col-md-6', ['class' => 'form-control', 'required']) }}
+                            </div>
+                            <div class="form-group">
+                                <label>Cor do widget</label>
+                                {{ Form::select('widget[options][background]', ['not' => 'Escolha uma cor', 'bg-brand' => 'Default', 'bg-secondary' => 'Secundaria', 'bg-primary' => 'Azul', 'bg-warning' => 'Amarelo', 'bg-success' => 'Verde', 'bg-danger' => 'Vermelho'], $widget->pivot->options['background']?? 'not', ['class' => 'form-control', 'required']) }}
+                            </div>
+                            @if(isset($widget) && isset($widget->options) && !empty($widget->options))
+                                @foreach($widget->options as $option)
+                                    {!! option_input($widget, $option, false, ['name' => 'widget[options]']) !!}
+                                @endforeach
+                            @endif
+                        </p>
+                    </div>
+                    <div class="card-footer">
+                        <button type="submit" class="btn btn-primary btn-small float-right">
+                            {{ __('dashboard::save') }}
+                        </button>
+                        <small class="text-muted">Widgets ainda na versão beta</small>
+                    </div>
+                    {!! Form::close() !!}
+                </div>
+
+
+
+
+
+
+
+
+
                 <div class="kt-portlet {{ $widget->pivot->options['background']?? '' }}">
                     <div class="kt-portlet__head">
                         <div class="kt-portlet__head-label">
@@ -33,28 +73,7 @@
                         </div>
                     </div>
                     <div class="kt-portlet__body">
-                        <div class="form-group">
-                            <label>Titulo</label>
-
-                            {!! Form::text('sync[widgets][' . $widget->pivot->id . '][options][title]', $widget->pivot->options['title']?? '', ['class' => 'form-control', 'placeholder' => 'Titulo desse widget', 'required']) !!}
-                        </div>
-
-                        <div class="form-group">
-                            <label>Tamanho do widget</label>
-                            {{ Form::select('sync[widgets][' . $widget->pivot->id . '][options][col]', ['col-md-3' => '1/4', 'col-md-6' => '2/4', 'col-md-9' => '3/4', 'col-md-12' => '4/4'], $widget->pivot->options['col']?? 'col-md-6', ['class' => 'form-control', 'required']) }}
-                        </div>
-
-                        <div class="form-group">
-                            <label>Cor do widget</label>
-                            {{ Form::select('sync[widgets][' . $widget->pivot->id . '][options][background]', ['not' => 'Escolha uma cor', 'bg-brand' => 'Azul', 'bg-warning' => 'Amarelo', 'bg-success' => 'Verde', 'bg-danger' => 'Vermelho'], $widget->pivot->options['background']?? 'not', ['class' => 'form-control', 'required']) }}
-                        </div>
-
-                        @if(isset($widget) && isset($widget->options) && !empty($widget->options))
-                            @foreach($widget->options as $option)
-                                {!! option_input($widget, $option, false, ['name' => 'sync[widgets][' . $widget->pivot->id . '][options]']) !!}
-                            @endforeach
-                        @endif
-
+                        
                     </div>
                     <div class="kt-portlet__foot">
                         <div class="row align-items-center">
@@ -62,14 +81,25 @@
 
                             </div>
                             <div class="col-lg-6 kt-align-right">
-                                <button type="submit" class="btn btn-brand">{{ trans('meridien.save') }}</button>
+                                
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-
         @endforeach
-
     @endif
 </div>
+
+@isset($dashboard)
+    <div class="row">
+        <div class="col-12">
+            {!! Form::open(['route' => ['dashboards.widget.store', $dashboard->id], 'class' => 'horizontal-form']) !!}   
+                <button type="button" class="btn btn-info" data-toggle="modal" data-target="#add_widget">
+                Add Widgets
+                </button>
+                @include('dashboard::dashboards.partials.form_widget')
+            {!! Form::close() !!}
+        </div>
+    </div>
+@endisset

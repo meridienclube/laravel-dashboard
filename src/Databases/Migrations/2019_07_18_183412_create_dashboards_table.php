@@ -24,41 +24,6 @@ class CreateDashboardsTable extends Migration
                 ->on('users')
                 ->onDelete('cascade');
         });
-
-        Schema::create('widgetgables', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->unsignedBigInteger('widget_id');
-            $table->morphs('widgetgable');
-            $table->json('options')->nullable();
-            $table->integer('order')->default(1);
-            $table->timestamps();
-
-            $table->foreign('widget_id')
-                ->references('id')
-                ->on('widgets')
-                ->onDelete('cascade');
-        });
-
-        /*
-        Schema::create('dashboard_widget', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->unsignedBigInteger('dashboard_id');
-            $table->unsignedBigInteger('widget_id');
-            $table->json('options')->nullable();
-            $table->integer('order')->default(1);
-            $table->timestamps();
-
-            $table->foreign('dashboard_id')
-                ->references('id')
-                ->on('dashboards')
-                ->onDelete('cascade');
-
-            $table->foreign('widget_id')
-                ->references('id')
-                ->on('widgets')
-                ->onDelete('cascade');
-        });
-        */
     }
 
     /**
@@ -68,7 +33,6 @@ class CreateDashboardsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('dashboard_widget');
         Schema::dropIfExists('dashboards');
     }
 }

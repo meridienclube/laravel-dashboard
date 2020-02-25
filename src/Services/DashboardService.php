@@ -33,21 +33,16 @@ class DashboardService
         return NULL;
     }
 
-
-    /*
-    function createWidget($data, $id, $errorsRedirect = true, $dashboard = null)
+    function storeWidget($data, $id)
     {
-        $data['sync']['optionsValues'] = $this->formatOptionsForRelationships(isset($data['sync']['optionsValues']) ? $data['sync']['optionsValues'] : []);
-        $dashboard = $this->obj->createWidget($data, $id);
+        $dashboard = $this->obj->storeWidget($data, $id);
         return $dashboard;
     }
 
-    function updateWidget($data, $id, $widget_pivot_id, $errorsRedirect = true, $dashboard = null)
+    function updateWidget($data, $id, $widget_id)
     {
-        $data['sync']['optionsValues'] = $this->formatOptionsForRelationships(isset($data['sync']['optionsValues']) ? $data['sync']['optionsValues'] : []);
-        $dashboard = $this->obj->updateWidget($data, $id, $widget_pivot_id);
+        $dashboard = $this->obj->updateWidget($data, $id, $widget_id);
         return $dashboard;
     }
-    */
 
 }

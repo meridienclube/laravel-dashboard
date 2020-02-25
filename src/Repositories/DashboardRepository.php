@@ -7,6 +7,8 @@ use ConfrariaWeb\Dashboard\Models\Dashboard;
 use ConfrariaWeb\Dashboard\Models\DashboardWidget;
 use ConfrariaWeb\Vendor\Traits\RepositoryTrait;
 use ConfrariaWeb\Widget\Models\Widget;
+use Auth;
+use Illuminate\Support\Facades\DB;
 
 class DashboardRepository implements DashboardContract
 {
@@ -23,44 +25,33 @@ class DashboardRepository implements DashboardContract
         $where = $this->obj;
         $where = isset($take) ? $where->paginate($take) : $where->get();
         return $where;
+    }    
+
+    public function storeWidget($data, $id)
+    {
+        $dashboard = $this->obj->find($id);
+        $widgets = $data['widgets']?? null;
+        if(isset($widgets)){
+            $widgets = array_map(function($widget){
+                $r['user_id'] = Auth::id();
+                $r['widget_id'] = $widget;
+                return $r;
+              }, $widgets);
+
+            $dashboard->widgets()->attach($widgets);
+        }
+        return $dashboard;
     }
 
-    protected function syncs($obj, $data)
+    public function updateWidget($data, $id, $widget_id)
     {
-        /*
-       //dd($data['widgets']);
-        //dd($obj->widgets()->sync($data['widgets']));
-        if (isset($data['widgets'])) {
-            foreach($data['widgets'] as $k => $widget) {
-                //$wid = DashboardWidget::find($k);
-                dd($k, $widget);
-                //dd($data['widgets'][$widget->pivot->id]);
-                //$widget->pivot->update($data['widgets'][$widget->pivot->id]);
-                //$widget->pivot->options = $data['widgets'][$widget->pivot->id]['options']?? NULL;
-                //$widget->pivot->save();
-            }
-
-
-
-            //$obj->widgets()->detach(array_keys($data['widgets']));
-            //$obj->widgets()->attach($data['widgets']);
-
-            //dd($data['widgets']);
-
-            foreach($data['widgets'] as $k => $widget) {
-                dd($obj);
-                $obj->widgets()->where('id', $k)->sync($widget);
-            }
-
+        $widget = $data['widget']?? NULL;
+        if(isset($widget)){
+            $dashboard = DB::table('widgetgables')
+            ->where('id', $widget_id)
+            ->update($widget);
         }
-        */
-    }
-
-    protected function attach($obj, $data)
-    {
-        if (isset($data['widgets'])) {
-            $obj->widgets()->attach($data['widgets']);
-        }
+        return true;
     }
 
 }
