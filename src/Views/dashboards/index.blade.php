@@ -10,7 +10,9 @@
         </div>
     </div>
 
-    @widgets(['widgets' => $widgets])
+    @widgets(['widgets' => $widgets?? []])
+
+    @endwidgets
 
     @if(isset($dashboard))
         <div class="row">

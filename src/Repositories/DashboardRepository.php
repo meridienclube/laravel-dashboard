@@ -33,7 +33,7 @@ class DashboardRepository implements DashboardContract
         $widgets = $data['widgets']?? null;
         if(isset($widgets)){
             $widgets = array_map(function($widget){
-                $r['user_id'] = Auth::id();
+                //$r['user_id'] = Auth::id();
                 $r['widget_id'] = $widget;
                 return $r;
               }, $widgets);
