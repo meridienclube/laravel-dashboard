@@ -45,11 +45,10 @@ class DashboardRepository implements DashboardContract
 
     public function updateWidget($data, $id, $widget_id)
     {
-        $widget = $data['widget']?? NULL;
-        if(isset($widget)){
+        if(isset($data['options'])){
             $dashboard = DB::table('widgetgables')
             ->where('id', $widget_id)
-            ->update($widget);
+            ->update(['options' => $data['options']]);
         }
         return true;
     }
