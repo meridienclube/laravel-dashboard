@@ -1,7 +1,7 @@
 @extends(config('cw_dashboard.layout'))
 @section('title', 'Edit Dashboard')
 @section('content')
-    {!! Form::model(['route' => ['dashboards.update', $dashboard->id], 'method' => 'put', 'class' => 'horizontal-form']) !!}
+    {!! Form::model($dashboard, ['route' => ['dashboards.update', $dashboard->id], 'method' => 'PUT', 'class' => 'horizontal-form']) !!}
         @include('dashboard::dashboards.partials.form')
     {!! Form::close() !!}
     <hr>

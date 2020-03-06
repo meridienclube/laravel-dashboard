@@ -4,6 +4,7 @@ Route::middleware(['web', 'auth'])
     ->group(function () {
 
         Route::get(config('cw_dashboard.route.index'), 'DashboardController@index')->name('dashboard');
+
         Route::resource('dashboards', 'DashboardController');
 
         Route::name('dashboards.widget.')
