@@ -1,5 +1,5 @@
 {
-  "name": "confrariaweb/laravel-dashboard",
+  "name": "meridienclube/laravel-dashboard",
   "version": "dev-master",
   "description": "Pacote de dashboard para Laravel integrado a widgets",
   "keywords": [
@@ -16,9 +16,9 @@
     }
   ],
   "require": {
-    "confrariaweb/laravel-user": "dev-master",
-    "confrariaweb/laravel-vendor": "dev-master",
-    "confrariaweb/laravel-widget": "dev-master"
+    "meridienclube/laravel-user": "dev-master",
+    "meridienclube/laravel-vendor": "dev-master",
+    "meridienclube/laravel-widget": "dev-master"
   },
   "autoload": {
     "psr-4": {
